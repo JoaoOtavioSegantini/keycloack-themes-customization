@@ -1,0 +1,6 @@
+<#import "layout.ftl" as layout>
+<@layout.registrationLayout ; section>
+   <#if section = 'scripts'>
+       <script src="<%= htmlWebpackPlugin.files.js %>"></script>
+   </#if>
+</@layout.registrationLayout>
