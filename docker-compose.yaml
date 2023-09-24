@@ -28,7 +28,9 @@ services:
     container_name: micro-auth-test
     volumes:
       - ./tests:/home/node/app
-    networks: 
-      - default
+    networks:
+      - app-network
 
+networks:
+  app-network:
     
