@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+
+  themes:
+    build:
+      context: ./themes
+      dockerfile: Dockerfile
+    volumes:
+      - ./themes:/home/node/app
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    command: start-dev --http-relative-path=/auth
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+    volumes:
+      - ./themes/build/codeflix-catalog:/opt/keycloak/themes/codeflix-catalog
+  
+  test:
+    build: ./tests
+    entrypoint: ./.docker/entrypoint.sh
+    container_name: micro-auth-test
+    volumes:
+      - ./tests:/home/node/app
+    networks: 
+      - default
+
+    
