@@ -1,24 +1,8 @@
-import { Builder, Capabilities, WebDriver, until } from "selenium-webdriver";
+import { Builder, WebDriver, until } from "selenium-webdriver";
 import Keycloak from "keycloak-connect";
 import session from "express-session";
 import { v4 as uuidv4 } from "uuid";
-
-const capabilities = Capabilities.chrome();
-
-capabilities.set("goog:chromeOptions", {
-  args: [
-    "--disable-gpu",
-    "--headless",
-    "--window-size=800,600",
-    "--enable-javascript",
-    "--disable-extensions",
-    "--disable-dev-shm-usage",
-    "--no-proxy-server",
-    "--proxy-server='direct://'",
-    "--proxy-bypass-list=*",
-    "--no-sandbox",
-  ],
-});
+import { capabilities } from "../setup";
 
 describe("validate themes", () => {
   let driver: WebDriver;
@@ -59,7 +43,7 @@ describe("validate themes", () => {
       })
     );
 
-    let title = await span.getText();
+    const title = await span.getText();
 
     expect(title).toBe("Log In");
 
