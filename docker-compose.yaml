@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./themes:/home/node/app
+    entrypoint: ./.docker/entrypoint.sh
     profiles:
       - "test"
 
