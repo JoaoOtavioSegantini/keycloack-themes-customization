@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./themes:/home/node/app
+    profiles:
+      - "test"
 
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
@@ -20,7 +22,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./themes/build/codeflix-catalog:/opt/keycloak/themes/codeflix-catalog
+      - ./themes/build/codeflix-catalog:/opt/keycloak/themes/keycloak
   
   test:
     build: ./tests
@@ -30,6 +32,16 @@ services:
       - ./tests:/home/node/app
     networks:
       - app-network
+    profiles:
+      - "test"
+
+  selenium:
+    image: selenium/standalone-chrome:88.0.4324.150-chromedriver-88.0.4324.96
+    networks:
+      - app-network
+    profiles:
+      - "test"
+
 
 networks:
   app-network:

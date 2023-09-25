@@ -11,6 +11,7 @@ import React from "react";
 import { Navbar } from "./Navbar";
 import LocaleSelect from "./LocaleSelect";
 import { AlertColor } from "@mui/material/Alert";
+
 export interface LayoutProps {
   children?: React.ReactNode;
   i18nEnabled: boolean;
@@ -29,6 +30,7 @@ export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
     isAppInitiatedAction,
     children,
   } = props;
+  
 
   const CardStyled = styled("div")(({ theme }) => ({
     width: 600,
