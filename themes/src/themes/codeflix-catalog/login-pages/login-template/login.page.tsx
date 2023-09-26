@@ -78,8 +78,6 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
     socialProviders,
   } = props;
 
-  console.log(register);
-
   return (
     <Box padding={2}>
       {!loginEnabled && (
@@ -129,7 +127,7 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
               )}
             </Grid>
             <Grid container>
-              {/* <Grid
+              <Grid
                 item
                 xs={7}
                 style={{ display: "flex", alignItems: "center" }}
@@ -142,7 +140,7 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
                     </Link>
                   </div>
                 )}
-              </Grid> */}
+              </Grid>
               <Grid
                 item
                 xs={12}
