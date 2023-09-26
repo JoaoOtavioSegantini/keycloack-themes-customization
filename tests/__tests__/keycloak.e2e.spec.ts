@@ -1,4 +1,4 @@
-import { Builder, WebDriver, until } from "selenium-webdriver";
+import { Builder, By, WebDriver, until } from "selenium-webdriver";
 import Keycloak from "keycloak-connect";
 import session from "express-session";
 import { v4 as uuidv4 } from "uuid";
@@ -33,6 +33,7 @@ describe("validate themes", () => {
     );
 
     const loginUrl = keycloak.loginUrl(uuidv4(), "http://localhost:8000");
+    console.log(loginUrl);
 
     await driver.get(loginUrl);
     await driver.sleep(5000);
@@ -45,13 +46,76 @@ describe("validate themes", () => {
 
     const title = await span.getText();
 
-    expect(title).toBe("Log In");
-
     const text = await driver.wait(
       until.elementLocated({
         xpath: "//span[text()='Log In']",
       })
     );
+
+    const header = await driver.findElement(By.xpath("//header"));
+
+    const mainTitle = await header
+      .findElement(By.xpath("//img"))
+      .getAttribute("alt");
+
+    const form = await driver.findElement(By.xpath("//form"));
+
+    const usernameLabel = await form
+      .findElement(By.id("username-label"))
+      .getText();
+
+    const passwordLabel = await form
+      .findElement(By.id("password-label"))
+      .getText();
+
+    const usernameInput = await form.findElement(By.id("username"));
+
+    const passwordInput = await form.findElement(By.id("password"));
+
+    const keepMeConnected = await form
+      .findElement(
+        By.className(
+          "MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label"
+        )
+      )
+      .getText();
+
+    const forgetPassword = await form
+      .findElement(
+        By.className(
+          "MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways"
+        )
+      )
+      .getText();
+
+    const register = await driver.wait(
+      until.elementsLocated({
+        xpath: "//a[text()='Register']",
+      })
+    );
+
+    const loginBtn = await driver
+      .findElement(
+        By.className(
+          "MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeMedium MuiButton-containedSizeMedium"
+        )
+      )
+      .getText();
+
+    const select = await driver.findElement(By.xpath("//select")).getText();
+
+    expect(title).toBe("Log In");
     expect(text).not.toBeNull();
+    expect(header).not.toBeNull();
+    expect(mainTitle).toBe("CodeFlix");
+    expect(usernameInput).toBeDefined();
+    expect(passwordInput).toBeDefined();
+    expect(usernameLabel).toBe("Username or email");
+    expect(passwordLabel).toBe("Password");
+    expect(keepMeConnected).toBe("Remember me");
+    expect(forgetPassword).toBe("Forgot Password?");
+    expect(register).toBeDefined();
+    expect(loginBtn).toBe("LOGIN");
+    expect(select).toBe(`Deutsch\nPortuguês (Brasil)\nel\nEnglish\nItaliano\nCatalà`);
   });
 });
