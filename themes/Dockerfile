@@ -5,3 +5,7 @@ RUN apk add --no-cache bash
 USER node
 
 WORKDIR /home/node/app
+
+RUN mkdir -p build
+
+RUN sudo chown node:node build
