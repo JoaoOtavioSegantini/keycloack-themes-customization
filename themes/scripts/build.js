@@ -1,3 +1,4 @@
+// eslint-disable-next-line strict
 "use strict";
 
 // Do this as the first thing so that any code reading it knows the right env.
@@ -25,9 +26,8 @@ const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
 const printHostingInstructions = require("react-dev-utils/printHostingInstructions");
 const FileSizeReporter = require("react-dev-utils/FileSizeReporter");
 const printBuildError = require("react-dev-utils/printBuildError");
-const measureFileSizesBeforeBuild =
-  FileSizeReporter.measureFileSizesBeforeBuild;
-const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
+const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } =
+  FileSizeReporter;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
@@ -166,9 +166,7 @@ function build(previousFileSizes) {
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
         // of the same problem, but confuse the reader with noise.
-        if (messages.errors.length > 1) {
-          messages.errors.length = 1;
-        }
+        messages.errors.length = Math.min(messages.errors.length, 1);
         return reject(new Error(messages.errors.join("\n\n")));
       }
       if (

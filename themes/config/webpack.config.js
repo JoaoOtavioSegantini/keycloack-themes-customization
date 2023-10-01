@@ -1,3 +1,4 @@
+// eslint-disable-next-line strict
 "use strict";
 
 const fs = require("fs");
@@ -203,8 +204,21 @@ module.exports = function (webpackEnv) {
             // https://github.com/facebook/create-react-app/issues/2677
             ident: "postcss",
             config: false,
-            plugins: !useTailwind
+            plugins: useTailwind
               ? [
+                  "tailwindcss",
+                  "postcss-flexbugs-fixes",
+                  [
+                    "postcss-preset-env",
+                    {
+                      autoprefixer: {
+                        flexbox: "no-2009",
+                      },
+                      stage: 3,
+                    },
+                  ],
+                ]
+              : [
                   "postcss-flexbugs-fixes",
                   [
                     "postcss-preset-env",
@@ -219,19 +233,6 @@ module.exports = function (webpackEnv) {
                   // so that it honors browserslist config in package.json
                   // which in turn let's users customize the target behavior as per their needs.
                   "postcss-normalize",
-                ]
-              : [
-                  "tailwindcss",
-                  "postcss-flexbugs-fixes",
-                  [
-                    "postcss-preset-env",
-                    {
-                      autoprefixer: {
-                        flexbox: "no-2009",
-                      },
-                      stage: 3,
-                    },
-                  ],
                 ],
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
@@ -662,6 +663,7 @@ module.exports = function (webpackEnv) {
                 filename: path
                   .join(paths.appBuild, template.templateOut)
                   .replace("ejs", "ftl"),
+                // eslint-disable-next-line no-template-curly-in-string
                 publicPath: "${url.resourcesCommonPath}/..",
                 showErrors: true,
               },
